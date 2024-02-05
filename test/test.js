@@ -1,10 +1,5 @@
-//import { chai } from 'chai';
-//const {getSUM,getMAX} = require('./script');
 import { getMAX, getSUM } from './script';
 const expect = require('chai').expect;
-//let chai = require('chai');
-//let should = chai.should();
-//let { getSUM, getMAX} = require('./script');
 
 describe('Тестируем код', function () {
 
