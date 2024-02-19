@@ -112,10 +112,10 @@ __npm (node package manager)__ устанавливается автоматич
   ```
 
 * Подключаем сам webpack и плагины к нему, прописываем данные команды в консоль:<br>
-  `npm install --save-dev webpack webpack-cli webpack-dev-server
-  `npm install --save-dev html-webpack-plugin
-  `npm isntall --save-dev css-loader style-loader
-  `npm install --save-dev mini-css-extract-plugin
+  `npm install --save-dev webpack webpack-cli webpack-dev-server` <br>
+  `npm install --save-dev html-webpack-plugin` <br>
+  `npm isntall --save-dev css-loader style-loader` <br>
+  `npm install --save-dev mini-css-extract-plugin` <br>
   Данные команды содержат минимальный набор для удобной разработки web-сайта.
 
 * В _Package.json_ в _"scripts:"_ занесем команды:<br>
