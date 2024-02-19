@@ -69,50 +69,67 @@ __npm (node package manager)__ устанавливается автоматич
   ```js
     const path = require('path'); // Импортируем модуль "path" для работы с путями файлов
     const HtmlWebpackPlugin = require('html-webpack-plugin');
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
     module.exports = {
-        entry: './src/index.js', // Точка входа для сборки проекта
+      entry: './src/index.js', // Точка входа для сборки проекта
 
-        output: {
-          filename: 'bundle.js', // Имя выходного файла сборки
-          path: path.resolve(__dirname, 'dist'), // Путь для выходного файла сборки
+      output: {
+        filename: 'bundle.js', // Имя выходного файла сборки
+        path: path.resolve(__dirname, 'dist'), // Путь для выходного файла сборки
+      },
+
+      module: {
+        rules: [
+        {
+            test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
+            use: [MiniCssExtractPlugin.loader, 'css-loader'], // Загрузчики, используемые для обработки CSS-файлов
         },
-
-        module: {
-          rules: [
-            {
-              test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
-              use: ['style-loader', 'css-loader'], // Загрузчики, используемые для обработки CSS-файлов
-            },
-          ],
+        {
+            test: /\.js$/,
+            use: 'babel-loader',
+            exclude: /node_modules/,
         },
-
-        plugins: [
-          new HtmlWebpackPlugin({
-          template: './src/index.html',
-          }),
         ],
+      },
 
-        devServer: {
-          static: {
+      plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: 'index.html',
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+        }),
+      ],
+
+      devServer: {
+        static: {
             directory: path.join(__dirname, 'dist'), // Каталог для статики
-          },
-          open: true, // Автоматически открывать браузер
         },
-        mode: 'development', // Режим сборки
-    };
+      },
+  };
   ```
+
+* Подключаем сам webpack и плагины к нему, прописываем данные команды в консоль:<br>
+  `npm install --save-dev webpack webpack-cli webpack-dev-server
+  `npm install --save-dev html-webpack-plugin
+  `npm isntall --save-dev css-loader style-loader
+  `npm install --save-dev mini-css-extract-plugin
+  Данные команды содержат минимальный набор для удобной разработки web-сайта.
 
 * В _Package.json_ в _"scripts:"_ занесем команды:<br>
   ```json
-    "start": "webpack serve",
+    "serve": "webpack serve --open --mode development",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
     "nodemon": "nodemon --exec babel-node script.js",
-    "test": " mocha --require @babel/register",
-    "build": "webpack"
+    "test": " mocha --require @babel/register"
   ```
 
 * И создадим html страницу, где подключим любой скрипт js<br>
-* Командой `>npm start` мы запустим сервер с содержащей страницей и при любых изменениях html либо JS файлах.<br>
+* Командой `>npm run dev` мы соберем проект в режиме development <br>
+* Командой `>npm run serve` мы запустим сервер с содержащей страницей.<br>
 Страница будет обновляться автоматически при сохранении изменений.
 
 ##### Четвертый этап:
