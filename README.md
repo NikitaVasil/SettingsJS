@@ -1,7 +1,12 @@
 # Настройка проекта на JS
 _Проект создаем в IDE VSCode_
+<<<<<<< HEAD
 #### Вводная часть
 В данной статье мы рассмотрим, как настроить компоненты NodeJS, такие как: _babel, nodemon, webpack, mocha, chai._<br>
+=======
+#### Вводная часть 
+В данной статье мы рассмотрим, как установить и настроить компоненты NodeJS: _babel, nodemon, webpack, mocha, chai._<br>
+>>>>>>> 42a6c1483ccf718ff38dd1783b1bc9c68ee7d959
 Для начала скачиваем и устанавливаем [NODEjs](https://nodejs.org/en "nodejs home") для создания веб-серверной структуры.<br>
 NodeJS содержит в себе различные инструменты и приложения, которые мы рассмотрим ниже.<br>
 __npm (node package manager)__ устанавливается автоматически вместе при установке nodejs.<br>
@@ -69,50 +74,67 @@ __npm (node package manager)__ устанавливается автоматич
   ```js
     const path = require('path'); // Импортируем модуль "path" для работы с путями файлов
     const HtmlWebpackPlugin = require('html-webpack-plugin');
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
     module.exports = {
-        entry: './src/index.js', // Точка входа для сборки проекта
+      entry: './src/index.js', // Точка входа для сборки проекта
 
-        output: {
-          filename: 'bundle.js', // Имя выходного файла сборки
-          path: path.resolve(__dirname, 'dist'), // Путь для выходного файла сборки
+      output: {
+        filename: 'bundle.js', // Имя выходного файла сборки
+        path: path.resolve(__dirname, 'dist'), // Путь для выходного файла сборки
+      },
+
+      module: {
+        rules: [
+        {
+            test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
+            use: [MiniCssExtractPlugin.loader, 'css-loader'], // Загрузчики, используемые для обработки CSS-файлов
         },
-
-        module: {
-          rules: [
-            {
-              test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
-              use: ['style-loader', 'css-loader'], // Загрузчики, используемые для обработки CSS-файлов
-            },
-          ],
+        {
+            test: /\.js$/,
+            use: 'babel-loader',
+            exclude: /node_modules/,
         },
-
-        plugins: [
-          new HtmlWebpackPlugin({
-          template: './src/index.html',
-          }),
         ],
+      },
 
-        devServer: {
-          static: {
+      plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: 'index.html',
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+        }),
+      ],
+
+      devServer: {
+        static: {
             directory: path.join(__dirname, 'dist'), // Каталог для статики
-          },
-          open: true, // Автоматически открывать браузер
         },
-        mode: 'development', // Режим сборки
-    };
+      },
+  };
   ```
+
+* Подключаем сам webpack и плагины к нему, прописываем данные команды в консоль:<br>
+  `npm install --save-dev webpack webpack-cli webpack-dev-server` <br>
+  `npm install --save-dev html-webpack-plugin` <br>
+  `npm isntall --save-dev css-loader style-loader` <br>
+  `npm install --save-dev mini-css-extract-plugin` <br>
+  Данные команды содержат минимальный набор для удобной разработки web-сайта.
 
 * В _Package.json_ в _"scripts:"_ занесем команды:<br>
   ```json
-    "start": "webpack serve",
+    "serve": "webpack serve --open --mode development",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
     "nodemon": "nodemon --exec babel-node script.js",
-    "test": " mocha --require @babel/register",
-    "build": "webpack"
+    "test": " mocha --require @babel/register"
   ```
 
 * И создадим html страницу, где подключим любой скрипт js<br>
-* Командой `>npm start` мы запустим сервер с содержащей страницей и при любых изменениях html либо JS файлах.<br>
+* Командой `>npm run dev` мы соберем проект в режиме development <br>
+* Командой `>npm run serve` мы запустим сервер с содержащей страницей.<br>
 Страница будет обновляться автоматически при сохранении изменений.
 
 ##### Четвертый этап:
@@ -126,10 +148,10 @@ __npm (node package manager)__ устанавливается автоматич
 
 
 ##### Пятый этап:
-На данном этапе мы подключим инструменты такие как: mocha и chai, для тестирования нашей программы.<br>
+На данном этапе мы подключим инструменты такие как: mocha и chai, для тестирования наших скриптов.<br>
 `>npm i -g mocha`<br>
 `>npm i -g chai@4.3.6`<br>
-Заметьте chai я подключаю определенной версии, так как если подключить chai начиная с версии 5.0.0 возникают проблемы с Emscripten.
+Заметьте chai я подключаю определенной версии, так как если подключить chai начиная с версии 5.0.0 возникают проблемы с ECMAScript.
 Чтобы протестировать, как работают эти два инструмента. Создадим два файла script.js и test.js, заполним их: 
 ```js
   //script.js
